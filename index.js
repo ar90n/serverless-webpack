@@ -167,6 +167,13 @@ class ServerlessWebpack {
       'webpack:package:packageModules': () => BbPromise.bind(this)
         .then(this.packageModules),
 
+      'before:s3:start': () => BbPromise.bind(this)
+        .tap(() => {
+          lib.webpack.isLocal = true;
+        })
+        .then(this.prepareOfflineInvoke)
+        .then(this.wpwatch),
+
       'before:offline:start': () => BbPromise.bind(this)
         .tap(() => {
           lib.webpack.isLocal = true;
